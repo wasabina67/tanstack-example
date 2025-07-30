@@ -3,12 +3,16 @@ import './App.css'
 
 const queryClient = new QueryClient()
 
-function Example() {
+type ExampleProps = {
+  repoName: string
+}
+
+function Example({ repoName }: ExampleProps) {
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ['repoData'],
+    queryKey: [repoName],
     queryFn: async () => {
       const response = await fetch(
-        'https://api.github.com/repos/TanStack/query',
+        `https://api.github.com/repos/TanStack/${repoName}`,
       )
       return await response.json()
     },
@@ -33,7 +37,8 @@ function Example() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Example />
+      <Example repoName='query' />
+      <Example repoName='table' />
     </QueryClientProvider>
   )
 }
